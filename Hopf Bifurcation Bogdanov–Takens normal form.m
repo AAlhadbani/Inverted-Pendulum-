@@ -68,14 +68,16 @@ T1=taylor(RL1,[y3,y1,y2],[0  0  0],'order',3)
 %%
 clear
 syms y1 y2 y3
-A =sym([-1  -2^(1/2);10^(1/2)   0]) %invertable matrix
-y2=-sqrt(2)*y1^2/10
-y3=-y1^2/sqrt(5)
-B=[(-sqrt(2)*y1^2/10)+(sqrt(2)*y3^2/25)-(y1^2*y2/10)+(y2*y3^2/25)-(y2*y3/2*sqrt(5));(y1^2/5)+(2*y3^2/25)+(y2^2/2)] %orginal matrix
+A =sym([0  -1/sqrt(10);-2^(1/2)   -1/sqrt(5)])%invertable matrix
+AA=inv(A) %Inverse invertible matrix A
+y2=-(sqrt(2)*y1^2)/5
+y3=y1^2/sqrt(5)
+B=[(-sqrt(2)*y1^2/10)+(sqrt(2)*y3^2/25)-(y1^2*y2/10)+(y2*y3^2/25)-(y2*y3/2*sqrt(5));(y1^2/5)+(2*y3^2/25)-(y2^2/2)] %orginal matrix
 C=[- (2^(1/2)*y1^2)/10 - (4*2^(1/2)*y1^4)/125 - (2^(1/2)*y1^6)/1250;(13*y1^4)/500 + y1^2/5] %after inserting y2 and y3
-M=A*C 
-S1=subs(M(1),[y2,y3],[-sqrt(2)*y1^2/10  -y1^2/sqrt(5)]) 
-S2=subs(M(2),[y2,y3],[-sqrt(2)*y1^2/10  -y1^2/sqrt(5)])
+%M=AA*B %multiply inverse matrix by B 
+M=AA*C %multiply inverse matrix by C
+S1=subs(M(1),[y2,y3],[sqrt(2)*y1^2/5  y1^2/sqrt(5)]) 
+S2=subs(M(2),[y2,y3],[sqrt(2)*y1^2/5  y1^2/sqrt(5)])
 TS1=taylor(S1,y1,0,'order',3) %find taylor S1, where S1 the first row in matrix M
 TS2=taylor(S2,y1,0,'order',3) %find taylor S2, where S2 the second row in matrix M
 %%
