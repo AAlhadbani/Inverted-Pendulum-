@@ -64,7 +64,6 @@ RL=-RHS/J10
 RL1=simplify(subs(RL,y3,RL))
 T0=taylor(RL,[y3,y1,y2],[0  0  0],'order',3)
 T1=taylor(RL1,[y3,y1,y2],[0  0  0],'order',3)
-\end{lstlisting}
 %%
 clear
 syms y1 y2 y3
@@ -85,17 +84,6 @@ B=(y1^(2)/5)+(2*y3^(2)/25)+(y2^(2)/2)+(sqrt(2)*y2)+(y3/sqrt(5))
 So1=solve(B,y3)
 T=taylor(So1(1),[y1,y2],[0,0],'order',2)
  %%
-clear
-syms y2 y1 y3 
-
-A=y1^2/5 + y2^2/2 + 2^(1/2)*y2 + (2*y3^2)/25 + (5^(1/2)*y3)/5;
-J1=jacobian(A,y3)
-J10=subs(J1,[y2,y3,y1],[0 0 0])
-RHS=A-J10*y3
-RL=-RHS/J10
-RL1=simplify(subs(RL,y3,RL))
-T0=taylor(RL,[y3,y1,y2],[0  0  0],'order',3)
-T1=taylor(RL1,[y3,y1,y2],[0  0  0],'order',3)
 
 
 
