@@ -22,48 +22,55 @@ J0=subs(jacobian(aeq,vars),vars,sgvals)% Jaocbian is singular
 V=null(J0)
 W=null(J0') 
 %%
-clear
-syms x1 y1 b1
-xdot=(7*x1/5)-(8*y1/5)+12*(((x1)*(y1))/25)-8*(x1)^2/25
-ydot=(28*x1/5)-(7*y1/5)+8*(((b1)*(x1))/5)-2*(((b1)*(y1))/5)+21*(((x1)*(y1))/50)-7*(x1)^2/25
-s1x=solve(xdot,x1)
-s1y=solve(ydot,x1)
-s2x=taylor(s1(1),[x1,y1],[0 0],'order',2)
-s2y=taylor(s1(1),[x1,y1,b1],[0 0 0],'order',3)
-s3=solve(s2,y1)
-%%
+%First way to find c
 clear
 syms y2 y1 y3 
-A =20*c^2 - 4*5^(1/2)*c*y3 - 25*c + y3^2 - (5*y1^2)/2
-J1=jacobian(A,c)
+Ac =20*c^2 - 4*5^(1/2)*c*y3 - 25*c + y3^2 - (5*y1^2)/2
+J1=jacobian(Ac,c)
 %ans =40*c - 4*5^(1/2)*y3 - 25
 J10=subs(J1,[c,y1,y3],[0 0 0])
-RHS=A-J10*c
+RHS=Ac-J10*c
 RL=-RHS/J10
 RL1=simplify(subs(RL,c,RL))
 T0=taylor(RL,[c,y1,y3],[0  0  0],'order',3)
 T1=taylor(RL1,[c,y1,y3],[0  0  0],'order',3)
-%%
-A=((-sqrt(2)*y1^2)/10)+((sqrt(2)*y3^2)/25)-((y1^2*y2)/10)+((y2*y3^2)/25)-((y2*y3)/2*sqrt(5))-y3/sqrt(10)
- 
-A =(2^(1/2)*y3^2)/25 - (2^(1/2)*y1^2)/10 - (10^(1/2)*y3)/10 - (y1^2*y2)/10 + (y2*y3^2)/25 - (5^(1/2)*y2*y3)/2
-M=solve(A,y3)
+%Second way to find c
+syms y1 y2 y3 c x0 xc1 
+A=subs(aeq,[x0,xc1,omega,a],[(1/sqrt(5)*y3-2*c),y1,(sqrt(2)+y2),((2/sqrt(5)*y3)+c)]) %A*
+%To find c,I will choose A(1) %A(1)*
+A(1)
+J1=jacobian(A(1),c)
+SU=subs(J1,[c,y3],[0 0])
+RHS=A(1)-J1*c %Rarrange the equation 
+RL=-RHS/J1
+RL1=simplify(subs(RL,c,RL))
+T1=taylor(RL1,[y1,c,y3],[0  0  0],'order',3) % value of c
+%% 
+Al =(2^(1/2)*y3^2)/25 - (2^(1/2)*y1^2)/10 - (10^(1/2)*y3)/10 - (y1^2*y2)/10 + (y2*y3^2)/25 - (5^(1/2)*y2*y3)/2
+M=solve(Al,y3)
 M =(5*(5*5^(1/2)*y2 + 10^(1/2) - 10*((2*y1^2*y2^2)/125 + (4*2^(1/2)*y1^2*y2)/125 + (4*y1^2)/125 + (5*y2^2)/4 + (5^(1/2)*10^(1/2)*y2)/10 + 1/10)^(1/2)))/(4*(y2 + 2^(1/2)))
 (5*(5*5^(1/2)*y2 + 10^(1/2) + 10*((2*y1^2*y2^2)/125 + (4*2^(1/2)*y1^2*y2)/125 + (4*y1^2)/125 + (5*y2^2)/4 + (5^(1/2)*10^(1/2)*y2)/10 + 1/10)^(1/2)))/(4*(y2 + 2^(1/2)))
 taylor(M(1),[y1,y2],[0 0],'order',3)
 ans =
 -(2^(1/2)*10^(1/2)*y1^2)/10
 %%
+%First way to find y3
     clear
 syms y2 y1 y3 
-A=((-sqrt(2)*y1^2)/10)+((sqrt(2)*y3^2)/25)-((y1^2*y2)/10)+((y2*y3^2)/25)-((y2*y3)/2*sqrt(5))-y3/sqrt(10)
-J1=jacobian(A,y3)
+AK=((-sqrt(2)*y1^2)/10)+((sqrt(2)*y3^2)/25)-((y1^2*y2)/10)+((y2*y3^2)/25)-((y2*y3)/2*sqrt(5))-y3/sqrt(10)
+J1=jacobian(AK,y3)
 J10=subs(J1,[y2,y3,y1],[0 0 0])
-RHS=A-J10*y3
+RHS=AK-J10*y3
 RL=-RHS/J10
 RL1=simplify(subs(RL,y3,RL))
 T0=taylor(RL,[y3,y1,y2],[0  0  0],'order',3)
 T1=taylor(RL1,[y3,y1,y2],[0  0  0],'order',3)
+%Second way to find y3
+%Inserting T1(the value of c) into A(2) to get y3
+SU1=subs(A(2),c,T1)/y1 %A(2)*
+SS1=solve(SU1,y3)
+T2=taylor(SS1(2),[y1,y2,y3],[0,0,0],'order',3) %value ofy3
+
 %%
 clear
 syms y1 y2 y3
@@ -79,10 +86,6 @@ S1=subs(M(1),[y2,y3],[sqrt(2)*y1^2/5  y1^2/sqrt(5)])
 S2=subs(M(2),[y2,y3],[sqrt(2)*y1^2/5  y1^2/sqrt(5)])
 TS1=taylor(S1,y1,0,'order',3) %find taylor S1, where S1 the first row in matrix M
 TS2=taylor(S2,y1,0,'order',3) %find taylor S2, where S2 the second row in matrix M
-%%
-B=(y1^(2)/5)+(2*y3^(2)/25)+(y2^(2)/2)+(sqrt(2)*y2)+(y3/sqrt(5))
-So1=solve(B,y3)
-T=taylor(So1(1),[y1,y2],[0,0],'order',2)
  %%
 
 
