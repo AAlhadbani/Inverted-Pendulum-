@@ -28,15 +28,28 @@ A=subs(aeq,[x0,xc1,omega,a],[((1/sqrt(5)*y3)-(2*c)),y1,(sqrt(2)+y2),((2/sqrt(5)*
 A(1)
 J1=jacobian(A(1),c)
 SU=subs(J1,[c,y3],[0 0])
-RHS=A(1)-J1*c %Rarrange the equation 
-RL=-RHS/J1
+RHS=A(1)-SU*c %Rarrange the equation 
+RL=-RHS/SU
 RL1=simplify(subs(RL,c,RL))
-T1=taylor(RL1,[y1,c,y3],[0  0  0],'order',3) % value of c
+T1=taylor(RL1,[y1,y3,c], [0  0  0],'order',3) % value of c
 %Inserting T1(the value of c) into A(2) to get y3
-SU1=subs(A(2),c,T1)/y1
-SS1=solve(SU1,y3)
-T2=taylor(SS1(2),[y1,y2,y3],[0,0,0],'order',3) %value ofy3
+SU1=expand(subs(A(2),c,T1)/y1)
+J11=jacobian(SU1,y3)
+SU2=simplify(subs(J11,[y2,y3],[0  0]))
+RHS1=simplify(SU1-SU2*y3)
+RL2=simplify(-RHS1/SU2)
+RL3=simplify(subs(RL2,y3,RL2))
+T2=simplify(taylor(RL3,[y1,y2,y3],[0,0,0],'order',3)) %value ofy3
 %Inserting T1(the value of c) into A(3)(second equation) to get y2
+SU3=expand(subs(A(3),c,T1)/y1)
+J2=jacobian(SU3,y2)
+SU4=simplify(subs(J2,y2,0))
+RHS2=simplify(SU3-SU4*y2)
+RL4=-RHS2/SU4
+RL5=simplify(subs(RL4,y2,RL4))
+T3=simplify(taylor(RL5,[y1,y2,y3],[0,0,0],'order',2)) 
+RL6=expand(subs(T3,y3,T2))
+T4=taylor(RL6,[y1,y2],[0,0],'order',4)
 
 %%
 syms y1 y2 y3
