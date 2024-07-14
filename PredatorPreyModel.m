@@ -1,4 +1,4 @@
-%Example 4 in my second year report this example from Strogatz-Nonlinear-Dynamics and chaos
+%Example PredatorPreyModel in my second year report this example from Strogatz-Nonlinear-Dynamics and chaos
 % This solution for 2 dim
 clear
 syms a b x y
