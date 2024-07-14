@@ -1,6 +1,23 @@
 %Example 4 in my second year report this example from Strogatz-Nonlinear-Dynamics and chaos
 % This solution for 2 dim
 clear
+syms a b x y
+eq1=a-x-(4*x*y)/(1+x^(2)); %First equation (ODE RHS)
+eq2=b*x*(1-y/(1+x^(2))); %Second equation (ODE RHS)
+assume([x>0,y>0,a>0,b>0])
+J=jacobian([eq1,eq2],[x,y]); %find jacobian 
+S1=solve([eq1,eq2],[x,y]); %find the values of x and y (Equilibrium)
+J0=subs(J,S1) %insert the values of x and y in J 
+bhopf=solve(trace(J0),b) % From trace we find the value of b (Hpof)
+det(J0) % determinant of matrix J0
+subs(det(J0),a,10) %replace all values of a by 10 in det(J0)
+syms xh yh bh 
+H=subs([eq1;eq2],[x  y  b],[S1.x+xh,S1.y+yh,bhopf+bh]) %insert [S1.x+xh,S1.y+yh,bhopf+bh into x  y  b in 2 equations (Expanison)
+H0=subs(H,a,10)%%replace all values of a by 10 
+taylor(H0(1),[xh,yh,bh],'order',3)
+taylor(H0(2),[xh,yh,bh],'order',3) 
+%%
+clear
 syms x y a b s T
 eq1=T*(a-x-(4*x*y)/(1+x^(2))); %First equation ODE RHS,x and y are functions a ,b are parameters
 eq2=T*(b*x*(1-y/(1+x^(2))));
@@ -63,27 +80,7 @@ R=sm-S6*[yhat(2);yhat(3)]
 Rsm=taylor(R,[yhat(2);yhat(3)],[0;0],'order',2) %R is small
 S7=subs(-S6\R,[yhat(2);yhat(3)],[0;0])
 %%
-syms a b x y
-eq1=a-x-(4*x*y)/(1+x^(2)); %First equation (ODE RHS)
-eq2=b*x*(1-y/(1+x^(2))); %Second equation (ODE RHS)
-assume([x>0,y>0,a>0,b>0])
-J=jacobian([eq1,eq2],[x,y]); %find jacobian 
-S1=solve([eq1,eq2],[x,y]); %find the values of x and y (Equilibrium)
-J0=subs(J,S1) %insert the values of x and y in J 
-bhopf=solve(trace(J0),b) % From trace we find the value of b (Hpof)
-det(J0) % determinant of matrix J0
-subs(det(J0),a,10) %replace all values of a by 10 in det(J0)
-syms xh yh bh 
-H=subs([eq1;eq2],[x  y  b],[S1.x+xh,S1.y+yh,bhopf+bh]) %insert [S1.x+xh,S1.y+yh,bhopf+bh into x  y  b in 2 equations (Expanison)
-H0=subs(H,a,10)%%replace all values of a by 10 
-taylor(H0(1),[xh,yh,bh],'order',3)
-taylor(H0(2),[xh,yh,bh],'order',3) 
-%%
-aeq=(int(S1,s,0,2*pi))/(2*pi)
-S2=simplify(aeq)
-EQ1=subs(S2(:),vars,V*yhat+z)+W*alpha %equation 59
-taylor(EQ1,[z;alpha;yhat],zeros(length(z)+length(alpha)+length(yhat),1),'order',2)
-EQ2=V'*z %equation 60
+
 
 
                                                         
