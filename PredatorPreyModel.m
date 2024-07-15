@@ -33,13 +33,13 @@ dye=diff(ye,s);%
 a=10
 syms x1 y1 T1 b1 xh yh Th bh
 vars=[x0;xc(1);y0;yc(1);xs(1); T1         ;b1] % list of unknowns
-Ularge=[x;y;T;b] % list of unknowns, [x(t),y(t),b]
-Usmall=[x1;y1;T1;b1] % list of unknowns
+Ularge=[x;y;T;b] % list of unknowns, [x(t),y(t),b](large)
+Usmall=[xh;yh;Th;bh] % list of unknowns (small)
 Uhopf=  [2; 5  ; 1/sqrt(7) ;7/2] %Ularge-Usmall=Uhopf,Uhopf [x,y,T,b]=[a/5,a^2/25,1/sqrt(omega),3a/5-25/a] ,(delta(x),delta(y) are small),s0=[xhpof;0;yhpof;0;0;Thopf,bhopf] 
 %SU=subs([eq1  eq2],Ularge,[2+x1  5+y1  T1+(1/sqrt(sym(7)))    (7/2)+b1 ]) %notice Uhopf+Usmall
 SU=subs([eq1  eq2],Ularge,Uhopf+Usmall) %notice Uhopf+Usmall
 TA=taylor(SU,Usmall,0*Usmall,'order',3) %
-deq=subs(TA,[x1  y1],[xe,ye]) %[xe,ye]=[x0 + xc1*cos(s) + xs1*sin(s), y0 + yc1*cos(s)],where x0,xc1,xs1,yc1 are small(amplitude)
+deq=subs(TA,[xh  yh],[xe,ye]) %[xe,ye]=[x0 + xc1*cos(s) + xs1*sin(s), y0 + yc1*cos(s)],where x0,xc1,xs1,yc1 are small(amplitude)
 S=[1;reshape([cos(s*(1:k)),sin(s*(1:k))],[],1)]
 S1=simplify(S*[deq(1)-dxe , deq(2)-dye]) %dxe,dye differentail eq
 aeq=(int(S1,s,0,2*pi))/(2*pi)
@@ -54,9 +54,6 @@ J1=subs(J0,vars,sgvals)% Jaocbian is singular
 V=null(J1)
 V' %transpose
 W=null(J1') 
-%V' z=0, yhat1=xs1, yhat2 =T , yhat3 = b
-% syms  yhat1  yhat2  yhat3
-% Y=subs(S2,[x0 xc1 y0 yc1 xs1 T1 b1],[0  0  0  0  yhat1   yhat2  yhat3 ])
 %%
 z=sym('z',size(vars))
 yhat=sym('yhat',[size(V,2),1])%why we choose equations 
