@@ -11,7 +11,7 @@ J0=subs(J,S1) %insert the values of x and y in J
 bhopf=solve(trace(J0),b) % From trace we find the value of b (Hpof)
 det(J0) % determinant of matrix J0
 subs(det(J0),a,10) %replace all values of a by 10 in det(J0)
-syms xh yh bh 
+syms xh yh bh in my report delta_x,delta_y,delta_b (small)
 H=subs([eq1;eq2],[x  y  b],[S1.x+xh,S1.y+yh,bhopf+bh]) %insert [S1.x+xh,S1.y+yh,bhopf+bh into x  y  b in 2 equations (Expanison)
 H0=subs(H,a,10)%%replace all values of a by 10 
 taylor(H0(1),[xh,yh,bh],'order',3)
