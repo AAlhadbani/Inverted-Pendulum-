@@ -19,7 +19,7 @@ taylor(H0(2),[xh,yh,bh],'order',3)
 %%
 clear
 syms x y a b s T
-eq1=T*(a-x-(4*x*y)/(1+x^(2))); %First equation ODE RHS,x and y are functions a ,b are parameters
+eq1=T*(10-x-(4*x*y)/(1+x^(2))); %First equation ODE RHS,x and y are functions a ,b are parameters
 eq2=T*(b*x*(1-y/(1+x^(2))));
 syms x0 y0 xc yc omega
 k=1; % number of cos & sin components in harmonic expansion of x
@@ -30,7 +30,6 @@ xe=x0+cos((1:k)*s)*xc+sin((1:k)*s)*xs;% expansion of x(t)
 ye=y0+cos((1:k)*s)*yc
 dxe=diff(xe,s); % x'(t)=
 dye=diff(ye,s);%
-a=10
 syms x1 y1 T1 b1 xh yh Th bh
 vars=[x0;xc(1);y0;yc(1);xs(1); Th         ;bh] % list of unknowns
 Ularge=[x;y;T;b] % list of unknowns, [x(t),y(t),b](large)
