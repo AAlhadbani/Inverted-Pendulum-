@@ -32,7 +32,7 @@ dxe=diff(xe,s); % x'(t)=
 dye=diff(ye,s);%
 a=10
 syms x1 y1 T1 b1 xh yh Th bh
-vars=[x0;xc(1);y0;yc(1);xs(1); T1         ;b1] % list of unknowns
+vars=[x0;xc(1);y0;yc(1);xs(1); Th         ;bh] % list of unknowns
 Ularge=[x;y;T;b] % list of unknowns, [x(t),y(t),b](large)
 Usmall=[xh;yh;Th;bh] % list of unknowns (small)
 Uhopf=  [2; 5  ; 1/sqrt(7) ;7/2] %Ularge-Usmall=Uhopf,Uhopf [x,y,T,b]=[a/5,a^2/25,1/sqrt(omega),3a/5-25/a] ,(delta(x),delta(y) are small),s0=[xhpof;0;yhpof;0;0;Thopf,bhopf] 
@@ -48,7 +48,7 @@ TT=taylor(S2,[x0,xc(1),y0,yc(1),xs(1),T1,b1],[0 0 0 0 0 0 0],'order',2) %delta(t
 sgvals=[0;0;0;0;0;0;0] % valu
 residual=subs(aeq,vars,sgvals) %
  J0=jacobian(TT(:),vars)
-TT1=taylor(J0,[x0,xc(1),y0,yc(1),xs(1),T1,b1],[0 0 0 0 0 0 0],'order',2)
+TT1=taylor(J0,[x0,xc(1),y0,yc(1),xs(1),Th,bh],[0 0 0 0 0 0 0],'order',2)
 % J0=jacobian(aeq(:),vars)
 J1=subs(J0,vars,sgvals)% Jaocbian is singular
 V=null(J1)
