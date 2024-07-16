@@ -66,7 +66,7 @@ J01=subs(J3,[z;alpha;yhat],zeros(length(z)+length(alpha)+length(yhat),1)) %we ca
 % zeros(length(z)+length(alpha)+length(yhat),1)
 R=EQ-J01*[z;alpha] %R is reminder 
 TR=taylor(R,[z;alpha;yhat],zeros(length(z)+length(alpha)+length(yhat),1),'order',2) %R is small (1 is column)
-S4=subs(-J01\R,[z;alpha],zeros(length(z)+length(alpha),1)) %first order iteration z1 alpha1 -S3*R^-1(inverse R),S4 is values of z and alpha
+S4=subs(-J01\R,[z;alpha],zeros(length(z)+length(alpha),1)) %first order iteration z1 ,S4 is values of z and alpha,(-J01^-1 *R )
 S5=subs(-J01\R,[z;alpha],S4)%insertaing S4 (second iteration )
 TS=taylor(S5,[yhat],[0;0;0],'order',4)
 sm=simplify(TS(8:9)/yhat(1)) %divid by yhat1
