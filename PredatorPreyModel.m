@@ -76,7 +76,9 @@ R=sm-S6*[yhat(2);yhat(3)]
 Rsm=taylor(R,[yhat(2);yhat(3)],[0;0],'order',2) %R is small
 S7=subs(-S6\R,[yhat(2);yhat(3)],[0;0])
 %%
-
+solution=V*[yhat(1);S7]+TS8(1:end-2)% appling the form V*yhat+z we get vars, S7 means yhat2 yhat3,TS8 is z solution2, TS8(1:end-2) to remove last 2 row which related to alpha1 and alpha2
+xxe=subs(xe,vars,solution)+Uhopf(1)
+yye=subs(ye,vars,solution)+Uhopf(2)
 
 
                                                         
